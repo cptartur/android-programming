@@ -37,10 +37,8 @@ class MainActivity : AppCompatActivity() {
         val button7 = findViewById<Button>(R.id.button7)
         val button8 = findViewById<Button>(R.id.button8)
         val button9 = findViewById<Button>(R.id.button9)
-
         val buttonClear = findViewById<Button>(R.id.button_clear)
         val buttonEquals = findViewById<Button>(R.id.button_equals)
-
         val buttonAdd = findViewById<Button>(R.id.button_add)
         val buttonSubtract = findViewById<Button>(R.id.button_subtract)
         val buttonMultiply = findViewById<Button>(R.id.button_multiply)
@@ -64,33 +62,31 @@ class MainActivity : AppCompatActivity() {
         buttonEquals.setOnClickListener{ equalsPressed() }
     }
 
-    private fun calculate() {
-        total = when (operation) {
-            Operation.ADD -> memory + input
-            Operation.SUBTRACT -> memory - input
-            Operation.MULTIPLY -> memory * input
-            Operation.DIVIDE -> memory / input
-            null -> 0
-        }
-        display.text = total.toString()
-        memory = total
+    private fun setDisplay(text: String) {
+        display.text = text
     }
 
-    private fun calculate2(op: Operation?, x: Int, y: Int): Int {
+    private fun calculate(op: Operation?, x: Int, y: Int): Int {
         return when (operation) {
             Operation.ADD -> x + y
             Operation.SUBTRACT -> x - y
             Operation.MULTIPLY -> x * y
-            Operation.DIVIDE -> x / y
+            Operation.DIVIDE -> if (y != 0) x / y else throw IllegalArgumentException("Division by 0")
             null -> 0
         }
     }
 
     private fun equalsPressed() {
-        total = calculate2(operation, memory, input)
+        try {
+            total = calculate(operation, memory, input)
+        } catch (e: java.lang.IllegalArgumentException) {
+            clear()
+            setDisplay("ERR")
+            return
+        }
         memory = total
         readNewInput = true
-        display.text = total.toString()
+        setDisplay(total.toString())
     }
 
     private fun operationPressed(view: View) {
@@ -103,27 +99,41 @@ class MainActivity : AppCompatActivity() {
                 memory = input
             }
             else -> {
-                memory = calculate2(operation, memory, input)
+                try {
+                    memory = calculate(operation, memory, input)
+                } catch (e: java.lang.IllegalArgumentException) {
+                    clear()
+                    setDisplay("ERR")
+                    return
+                }
                 display.text = memory.toString()
             }
         }
         input = memory
-        operation = when (view.id) {
+        operation = setOperation(view.id)
+        readNewInput = true
+    }
+
+    private fun setOperation(id: Int): Operation? {
+        return when(id) {
             R.id.button_add -> Operation.ADD
             R.id.button_subtract -> Operation.SUBTRACT
             R.id.button_multiply -> Operation.MULTIPLY
             R.id.button_divide -> Operation.DIVIDE
             else -> null
         }
-        readNewInput = true
     }
 
     private fun clearPressed(view: View) {
+        clear()
+    }
+
+    private fun clear() {
         total = 0
         memory = 0
         input = 0
         operation = null
-        display.text = total.toString()
+        setDisplay(total.toString())
     }
 
     private fun digitPressed(view: View) {
@@ -143,6 +153,6 @@ class MainActivity : AppCompatActivity() {
             R.id.button8 -> input += 8
             R.id.button9 -> input += 9
         }
-        display.text = input.toString()
+        setDisplay(input.toString())
     }
 }
