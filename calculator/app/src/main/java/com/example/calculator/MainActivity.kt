@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import java.math.BigDecimal
 
 class MainActivity : AppCompatActivity() {
 
@@ -98,6 +99,7 @@ class MainActivity : AppCompatActivity() {
             operation == null -> {
                 memory = input
             }
+            readNewInput -> {}
             else -> {
                 try {
                     memory = calculate(operation, memory, input)
