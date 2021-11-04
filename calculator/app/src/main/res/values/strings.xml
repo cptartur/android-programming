@@ -3,11 +3,11 @@
     <string name="display">TextView</string>
     <string name="_0">0</string>
     <string name="decimal">,</string>
-    <string name="multiply">*</string>
+    <string name="multiply">×</string>
     <string name="equals">=</string>
     <string name="_2">2</string>
     <string name="_3">3</string>
-    <string name="divide">/</string>
+    <string name="divide">÷</string>
     <string name="_1">1</string>
     <string name="_5">5</string>
     <string name="_6">6</string>
