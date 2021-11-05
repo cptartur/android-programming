@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/artum/coding/android-programming/store/app/src/main/res/layout/activity_about_me.xml" value="0.34594594594594597" />
+        <entry key="..\:/Users/artum/coding/android-programming/store/app/src/main/res/layout/activity_cart.xml" value="0.4" />
+        <entry key="..\:/Users/artum/coding/android-programming/store/app/src/main/res/layout/activity_login.xml" value="0.176" />
+        <entry key="..\:/Users/artum/coding/android-programming/store/app/src/main/res/layout/activity_products.xml" value="0.4" />
+        <entry key="..\:/Users/artum/coding/android-programming/store/app/src/main/res/layout/activity_register.xml" value="0.4" />
+        <entry key="..\:/Users/artum/coding/android-programming/store/app/src/main/res/layout/items_layout.xml" value="0.4" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25687995600728664" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.22988893699884874" />
       </map>

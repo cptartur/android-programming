@@ -10,6 +10,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Store">
         <activity
+            android:name=".AboutMe"
+            android:exported="true"
+            android:parentActivityName=".Products"/>
+        <activity
+            android:name=".Cart"
+            android:exported="true"
+            android:parentActivityName=".Products" />
+        <activity
+            android:name=".Products"
+            android:exported="true"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Register"
+            android:exported="true"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
