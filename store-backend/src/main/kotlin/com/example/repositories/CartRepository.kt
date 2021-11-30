@@ -16,6 +16,15 @@ object CartRepository: Repository<Cart> {
         return id.value
     }
 
+    fun create(userId: Int): Int {
+        val id = transaction {
+            Carts.insertAndGetId {
+                it[Carts.userId] = userId
+            }
+        }
+        return id.value
+    }
+
     override fun update(id: Int, obj: Cart): Boolean {
         val status = transaction {
             Carts.update({ Carts.id eq id}) {
@@ -34,7 +43,7 @@ object CartRepository: Repository<Cart> {
 
     override fun findById(id: Int): Cart? {
         val resultRow = transaction {
-            Products.select { Products.id eq id }.firstOrNull()
+            Carts.select { Carts.userId eq id }.firstOrNull()
         }
         return resultRow?.let { Cart.fromRow(it) }
     }

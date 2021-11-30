@@ -6,6 +6,7 @@ import com.example.plugins.*
 import com.example.repositories.ProductRepository
 import com.example.repositories.UserRepository
 import com.example.routes.configureCRUDRoutes
+import com.example.routes.configureCartRoutes
 import com.example.tables.Carts
 import com.example.tables.CartsProducts
 import com.example.tables.Products
@@ -36,11 +37,12 @@ fun main() {
         Connection.TRANSACTION_SERIALIZABLE
     embeddedServer(Netty, port = 8080, host = "localhost") {
 //        configureUserRoutes()
+        configureSerialization()
         configureCRUDRoutes("user", UserRepository)
         configureCRUDRoutes("product", ProductRepository)
+        configureCartRoutes()
 //        configureProductRoutes()
         configureRouting()
-        configureSerialization()
         install(StatusPages) {
 
         }

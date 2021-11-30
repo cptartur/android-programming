@@ -1,19 +1,18 @@
 package com.example.repositories
 
-import com.example.models.Cart
 import com.example.models.Product
-import com.example.models.User
-import com.example.tables.Carts
 import com.example.tables.CartsProducts
 import com.example.tables.Products
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object CartProductRepository {
-    fun create(id: Int, product: Product, amount: Int): Int {
+    fun createOrUpdate(id: Int, product: Product, amount: Int): Int {
         transaction {
-            CartsProducts.insert {
+            CartsProducts.update({ CartsProducts.productId eq product.id}) {
+                it[CartsProducts.amount] = amount
+            }
+            CartsProducts.insertIgnore {
                 it[cartId] = id
                 it[productId] = product.id
                 it[CartsProducts.amount] = amount
@@ -31,18 +30,30 @@ object CartProductRepository {
         return status == 1
     }
 
-    fun remove(id: Int): Boolean {
+    fun remove(cartId: Int, productId: Int): Boolean {
         val status = transaction {
-            CartsProducts.deleteWhere { CartsProducts.cartId eq id }
+            CartsProducts.deleteWhere { (CartsProducts.productId eq productId) and (CartsProducts.cartId eq cartId) }
         }
         return status == 1
     }
 
-    fun findById(cartId: Int): List<Pair<Product, Int>>? {
-        return CartsProducts.join(Products, JoinType.INNER, additionalConstraint = { CartsProducts.cartId eq cartId })
-            .slice(Products.id, Products.price, Products.name, Products.description, CartsProducts.amount)
-            .selectAll()
-            .map {
-                Pair(Product(it[Products.name], it[Products.description], it[Products.price], it[Products.id].value), it[CartsProducts.amount]) }
+    fun findById(cartId: Int): List<ProductWithAmount> {
+        return transaction{
+            CartsProducts.join(Products, JoinType.INNER, additionalConstraint = { CartsProducts.cartId eq cartId })
+                .slice(Products.id, Products.price, Products.name, Products.description, CartsProducts.amount)
+                .selectAll()
+                .map {
+                    ProductWithAmount(
+                        Product(
+                            it[Products.name],
+                            it[Products.description],
+                            it[Products.price],
+                            it[Products.id].value
+                        ), it[CartsProducts.amount]
+                    )
+                }
+        }
     }
 }
+
+data class ProductWithAmount(val product: Product, val amount: Int)
