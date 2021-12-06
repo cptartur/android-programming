@@ -50,6 +50,7 @@ fun Application.configureCartRoutes() {
             val cartID = call.parameters["cart_id"]?.toInt()
             if (cartID != null) {
                 repository.remove(cartID)
+                carts.removeAll(cartID)
             }
         }
 

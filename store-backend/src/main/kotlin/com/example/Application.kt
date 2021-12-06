@@ -3,6 +3,7 @@ package com.example
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import com.example.plugins.*
+import com.example.repositories.CategoryRepository
 import com.example.repositories.ProductRepository
 import com.example.repositories.UserRepository
 import com.example.routes.configureCRUDRoutes
@@ -40,6 +41,7 @@ fun main() {
         configureSerialization()
         configureCRUDRoutes("user", UserRepository)
         configureCRUDRoutes("product", ProductRepository)
+        configureCRUDRoutes("category", CategoryRepository)
         configureCartRoutes()
 //        configureProductRoutes()
         configureRouting()

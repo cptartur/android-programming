@@ -37,6 +37,13 @@ object CartProductRepository {
         return status == 1
     }
 
+    fun removeAll(cartId: Int): Boolean {
+        val status = transaction {
+            CartsProducts.deleteWhere { CartsProducts.cartId eq cartId }
+        }
+        return status == 1
+    }
+
     fun findById(cartId: Int): List<ProductWithAmount> {
         return transaction{
             CartsProducts.join(Products, JoinType.INNER, additionalConstraint = { CartsProducts.cartId eq cartId })

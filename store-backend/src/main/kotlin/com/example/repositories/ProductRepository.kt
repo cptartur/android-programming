@@ -17,6 +17,7 @@ object ProductRepository : Repository<Product> {
                 it[name] = product.name
                 it[description] = product.description
                 it[price] = product.price
+                it[categoryId] = product.categoryId
             }
         }
         return id.value
@@ -28,6 +29,7 @@ object ProductRepository : Repository<Product> {
                 it[name] = product.name
                 it[description] = product.description
                 it[price] = product.price
+                it[categoryId] = product.categoryId
             }
         }
         return true
