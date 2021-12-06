@@ -55,7 +55,8 @@ object CartProductRepository {
                             it[Products.name],
                             it[Products.description],
                             it[Products.price],
-                            it[Products.id].value
+                            it[Products.id].value,
+                            it[Products.categoryId],
                         ), it[CartsProducts.amount]
                     )
                 }

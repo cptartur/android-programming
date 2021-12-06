@@ -1,8 +1,7 @@
 package com.example.repositories
 
 import com.example.models.Address
-import com.example.tables.Addresses.postalCode
-import com.example.tables.Addresses.streetAddress
+import com.example.tables.Addresses
 import com.example.tables.Categories
 import com.example.tables.Users
 import org.jetbrains.exposed.sql.*
@@ -12,10 +11,10 @@ object AddressRepository : Repository<Address> {
 
     override fun create(address: Address): Int {
         val id = transaction {
-            Categories.insertAndGetId {
-                it[id] = address.id,
-                it[streetAddress] = address.streetAddress,
-                it[postalCode] = address.postalCode,
+            Addresses.insertAndGetId {
+                it[id] = address.id
+                it[streetAddress] = address.streetAddress
+                it[postalCode] = address.postalCode
                 it[city] = address.city
                 it[phoneNumber] = address.phoneNumber
             }
@@ -23,10 +22,14 @@ object AddressRepository : Repository<Address> {
         return id.value
     }
 
-    override fun update(id: Int, Address: Address): Boolean {
+    override fun update(id: Int, address: Address): Boolean {
         transaction {
-            Categories.update({Users.id eq id}) {
-                it[name] = Address.name
+            Addresses.update({Users.id eq id}) {
+                it[Addresses.id] = address.id
+                it[streetAddress] = address.streetAddress
+                it[postalCode] = address.postalCode
+                it[city] = address.city
+                it[phoneNumber] = address.phoneNumber
             }
         }
         return true
@@ -34,21 +37,21 @@ object AddressRepository : Repository<Address> {
 
     override fun remove(id: Int): Boolean {
         val status = transaction {
-            Categories.deleteWhere { Categories.id eq id }
+            Addresses.deleteWhere { Addresses.id eq id }
         }
         return status == 1
     }
 
     override fun findById(id: Int): Address? {
         val resultRow = transaction {
-            Categories.select { Categories.id eq id }.firstOrNull()
+            Addresses.select { Addresses.id eq id }.firstOrNull()
         }
         return resultRow?.let { Address.fromRow(it) }
     }
 
     override fun findAll(): List<Address> {
         return transaction {
-            Categories.selectAll().map { Address.fromRow(it) }
+            Addresses.selectAll().map { Address.fromRow(it) }
         }
     }
 }
