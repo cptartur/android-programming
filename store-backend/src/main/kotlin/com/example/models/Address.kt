@@ -9,7 +9,8 @@ data class Address(
     var streetAddress: String,
     var postalCode: String,
     var city: String,
-    var phoneNumber: String
+    var phoneNumber: String,
+    var userId: Int,
 ) {
     companion object {
         fun fromRow(row: ResultRow) = Address(
@@ -17,7 +18,8 @@ data class Address(
             streetAddress = row[Addresses.streetAddress],
             postalCode = row[Addresses.postalCode],
             city = row[Addresses.city],
-            phoneNumber = row[Addresses.phoneNumber]
+            phoneNumber = row[Addresses.phoneNumber],
+            userId = row[Addresses.userId],
         )
     }
 }

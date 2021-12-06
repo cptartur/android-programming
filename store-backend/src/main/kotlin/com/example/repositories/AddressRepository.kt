@@ -17,6 +17,7 @@ object AddressRepository : Repository<Address> {
                 it[postalCode] = address.postalCode
                 it[city] = address.city
                 it[phoneNumber] = address.phoneNumber
+                it[userId] = address.userId
             }
         }
         return id.value
@@ -30,6 +31,7 @@ object AddressRepository : Repository<Address> {
                 it[postalCode] = address.postalCode
                 it[city] = address.city
                 it[phoneNumber] = address.phoneNumber
+                it[userId] = address.userId
             }
         }
         return true

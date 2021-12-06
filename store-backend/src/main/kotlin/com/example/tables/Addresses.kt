@@ -7,4 +7,5 @@ object Addresses: IntIdTable() {
     val postalCode = varchar("postal_code", 7)
     val city = varchar("city", 50)
     val phoneNumber = varchar("phone_number", 14)
+    val userId = integer("user_id").references(Users.id)
 }
