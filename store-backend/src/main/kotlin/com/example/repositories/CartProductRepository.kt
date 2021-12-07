@@ -46,9 +46,9 @@ object CartProductRepository {
 
     fun findById(cartId: Int): List<ProductWithAmount> {
         return transaction{
-            CartsProducts.join(Products, JoinType.INNER, additionalConstraint = { CartsProducts.cartId eq cartId })
-                .slice(Products.id, Products.price, Products.name, Products.description, CartsProducts.amount)
-                .selectAll()
+            CartsProducts.join(Products, JoinType.INNER, additionalConstraint = { CartsProducts.productId eq Products.id })
+                .slice(Products.id, Products.price, Products.name, Products.description, Products.categoryId, CartsProducts.amount)
+                .select { CartsProducts.cartId eq cartId }
                 .map {
                     ProductWithAmount(
                         Product(
