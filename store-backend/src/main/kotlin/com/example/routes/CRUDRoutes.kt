@@ -25,7 +25,7 @@ inline fun <reified TModel: Any> Application.configureCRUDRoutes(
             obj?.let { call.respond(it) }
         }
 
-        post("/$routeString/{id}") {
+        post("/$routeString") {
             val product = call.receive(TModel::class)
             val tableID = repository.create(product)
             call.response.apply {
