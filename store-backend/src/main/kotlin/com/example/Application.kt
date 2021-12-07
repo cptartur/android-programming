@@ -3,6 +3,7 @@ package com.example
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import com.example.plugins.*
+import com.example.repositories.AddressRepository
 import com.example.repositories.CategoryRepository
 import com.example.repositories.ProductRepository
 import com.example.repositories.UserRepository
@@ -34,6 +35,7 @@ fun main() {
         configureCRUDRoutes("user", UserRepository)
         configureCRUDRoutes("product", ProductRepository)
         configureCRUDRoutes("category", CategoryRepository)
+        configureCRUDRoutes("address", AddressRepository)
         configureCartRoutes()
         configureRouting()
         install(StatusPages) {
