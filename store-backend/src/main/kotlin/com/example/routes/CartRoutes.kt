@@ -18,7 +18,7 @@ fun Application.configureCartRoutes() {
         get("/$baseString/{user_id}") {
             val id = call.parameters["user_id"]?.toInt()
             if (id != null) {
-                repository.findById(id)?.let { call.respond(it) }
+                cartRepository.findAllById(id).let { call.respond(it) }
             }
         }
 

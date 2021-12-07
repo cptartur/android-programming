@@ -48,6 +48,13 @@ object CartRepository: Repository<Cart> {
         return resultRow?.let { Cart.fromRow(it) }
     }
 
+    fun findAllById(id: Int): List<Cart> {
+        val resultRow = transaction {
+            Carts.select { Carts.userId eq id }.map { Cart.fromRow(it) }
+        }
+        return resultRow
+    }
+
     override fun findAll(): List<Cart> {
         return transaction {
             Carts.selectAll().map { Cart.fromRow(it) }
