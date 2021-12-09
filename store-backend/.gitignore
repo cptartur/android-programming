@@ -78,3 +78,4 @@ build/
 gradle/wrapper
 
 *.sqlite
+bin/
