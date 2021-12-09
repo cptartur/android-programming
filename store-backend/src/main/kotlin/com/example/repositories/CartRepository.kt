@@ -28,6 +28,7 @@ object CartRepository: Repository<Cart> {
     override fun update(id: Int, obj: Cart): Boolean {
         val status = transaction {
             Carts.update({ Carts.id eq id}) {
+                it[Carts.id] = Carts.select { Carts.id eq id }.first()[Carts.id]
                 it[userId] = obj.userId
             }
         }

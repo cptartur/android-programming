@@ -22,6 +22,7 @@ object UserRepository: Repository<User> {
     override fun update(id: Int, user: User): Boolean {
         transaction {
             Users.update({Users.id eq id}) {
+                it[Users.id] = Users.select { Users.id eq id }.first()[Users.id]
                 it[name] = user.name
             }
         }

@@ -24,7 +24,8 @@ object CategoryRepository : Repository<Category> {
 
     override fun update(id: Int, category: Category): Boolean {
         transaction {
-            Categories.update({Users.id eq id}) {
+            Categories.update({Categories.id eq id}) {
+                it[Categories.id] = Categories.select { Categories.id eq id }.first()[Categories.id]
                 it[name] = category.name
             }
         }

@@ -25,8 +25,8 @@ object AddressRepository : Repository<Address> {
 
     override fun update(id: Int, address: Address): Boolean {
         transaction {
-            Addresses.update({Users.id eq id}) {
-                it[Addresses.id] = address.id
+            Addresses.update({Addresses.id eq id}) {
+                it[Addresses.id] = Addresses.select {Addresses.id eq id}.first()[Addresses.id]
                 it[streetAddress] = address.streetAddress
                 it[postalCode] = address.postalCode
                 it[city] = address.city

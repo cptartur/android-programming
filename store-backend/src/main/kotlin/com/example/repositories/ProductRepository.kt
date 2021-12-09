@@ -25,10 +25,11 @@ object ProductRepository : Repository<Product> {
 
     override fun update(id: Int, product: Product): Boolean {
         transaction {
-            Products.update({Users.id eq id}) {
+            Products.update({Products.id eq id}) {
                 it[name] = product.name
                 it[description] = product.description
                 it[price] = product.price
+                it[Products.id] = Products.select { Products.id eq id }.first()[Products.id]
                 it[categoryId] = product.categoryId
             }
         }
