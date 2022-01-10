@@ -4,10 +4,17 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.Required
 
-open class Category(): RealmObject() {
+open class RealmProduct(): RealmObject() {
     @PrimaryKey
     var id: Int = 0
 
     @Required
     var name: String = ""
+
+    @Required
+    var description: String = ""
+
+    var price: Int = 0
+
+    var categoryId: Int = 0
 }

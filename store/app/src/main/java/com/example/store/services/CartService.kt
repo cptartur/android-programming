@@ -8,20 +8,20 @@ import com.example.store.models.ProductAndAmount
 interface CartService {
 
     @GET("cart/{id}")
-    fun getUserCarts(@Path("id") id: Int): Call<List<Cart>>
+    suspend fun getUserCarts(@Path("id") id: Int): List<Cart>
 
     @GET("cart/{user_id}/{id}")
-    fun getUserCartByID(@Path("user_id") userID: Int, @Path("id") id: Int): Call<Cart>
+    suspend fun getUserCartByID(@Path("user_id") userID: Int, @Path("id") id: Int): Cart
 
     @POST("cart/{id}")
-    fun createCart(@Path("id") userID: Int): Call<Cart>
+    suspend fun createCart(@Path("id") userID: Int)
 
     @PUT("cart/{id}")
-    fun updateCart(@Path("id") cartID: Int, @Body products: List<ProductAndAmount>): Call<Cart>
+    suspend fun updateCart(@Path("id") cartID: Int, @Body products: List<ProductAndAmount>)
 
     @DELETE("cart/{id}")
-    fun deleteCart(@Path("id") cartID: Int): Call<Cart>
+    suspend fun deleteCart(@Path("id") cartID: Int)
 
     @DELETE("cart/{cart_id}/{id}")
-    fun deleteProduct(@Path("cart_id") cartID: Int, @Path("id") productID: Int): Call<Cart>
+    suspend fun deleteProduct(@Path("cart_id") cartID: Int, @Path("id") productID: Int)
 }

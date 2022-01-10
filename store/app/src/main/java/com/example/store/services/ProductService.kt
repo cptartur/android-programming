@@ -7,17 +7,17 @@ import retrofit2.http.*
 interface ProductService {
 
     @GET("product")
-    fun getProducts(): Call<List<Product>>
+    suspend fun getProducts(): List<Product>
 
     @GET("product/{id}")
-    fun getProductByID(@Path("id") id: Int): Call<Product>
+    suspend fun getProductByID(@Path("id") id: Int): Product
 
     @POST("product")
-    fun createProduct(@Body product: Product): Call<Product>
+    suspend fun createProduct(@Body product: Product)
 
     @PUT("product/{id}")
-    fun updateProduct(@Path("id") id: Int, @Body product: Product): Call<Product>
+    suspend fun updateProduct(@Path("id") id: Int, @Body product: Product)
 
     @DELETE("product/{id}")
-    fun deleteProduct(@Path("id") id: Int): Call<Product>
+    suspend fun deleteProduct(@Path("id") id: Int)
 }

@@ -7,17 +7,17 @@ import retrofit2.http.*
 interface AddressService {
 
     @GET("address")
-    fun getAddresses(): Call<List<Address>>
+    suspend fun getAddresses(): List<Address>
 
     @GET("address/{id}")
-    fun getAddressByID(@Path("id") id: Int): Call<Address>
+    suspend fun getAddressByID(@Path("id") id: Int): Address
 
     @POST("address")
-    fun createAddress(@Body address: Address): Call<Address>
+    suspend fun createAddress(@Body address: Address)
 
     @PUT("address/{id}")
-    fun updateAddress(@Path("id") id: Int, @Body address: Address): Call<Address>
+    suspend fun updateAddress(@Path("id") id: Int, @Body address: Address)
 
     @DELETE("address/{id}")
-    fun deleteAddress(@Path("id") id: Int): Call<Address>
+    suspend fun deleteAddress(@Path("id") id: Int)
 }

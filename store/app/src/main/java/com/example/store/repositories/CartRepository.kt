@@ -1,44 +1,33 @@
 package com.example.store.repositories
 
 import com.example.store.models.Cart
-import com.example.store.models.Product
 import com.example.store.models.ProductAndAmount
-import com.example.store.models.User
 import com.example.store.services.CartService
-import com.example.store.services.ProductService
-import com.example.store.services.UserService
-import retrofit2.Callback
 
 object CartRepository {
     private val service = RetrofitBuilder.buildService(CartService::class.java) as CartService
 
-    fun getCarts(id: Int, callback: Callback<List<Cart>>) {
-        val call = service.getUserCarts(id)
-        call.enqueue(callback)
+    suspend fun getCarts(id: Int): List<Cart> {
+       return service.getUserCarts(id)
     }
 
-    fun getCart(userId: Int, id: Int, callback: Callback<Cart?>) {
-        val call = service.getUserCartByID(userId, id)
-        call.enqueue(callback)
+    suspend fun getCart(userId: Int, id: Int): Cart {
+        return service.getUserCartByID(userId, id)
     }
 
-    fun createCart(userId: Int, callback: Callback<Cart>) {
-        val call = service.createCart(userId)
-        call.enqueue(callback)
+    suspend fun createCart(userId: Int) {
+        return service.createCart(userId)
     }
 
-    fun updateCart(cartId: Int, products: List<ProductAndAmount>, callback: Callback<Cart>) {
-        val call = service.updateCart(cartId, products)
-        call.enqueue(callback)
+    suspend fun updateCart(cartId: Int, products: List<ProductAndAmount>) {
+        return service.updateCart(cartId, products)
     }
 
-    fun deleteProduct(cartId: Int, id: Int, callback: Callback<Cart>) {
-        val call = service.deleteProduct(cartId, id)
-        call.enqueue(callback)
+    suspend fun deleteProduct(cartId: Int, id: Int) {
+        return service.deleteProduct(cartId, id)
     }
 
-    fun deleteCart(cartId: Int, callback: Callback<Cart>) {
-        val call = service.deleteCart(cartId)
-        call.enqueue(callback)
+    suspend fun deleteCart(cartId: Int) {
+        return service.deleteCart(cartId)
     }
 }

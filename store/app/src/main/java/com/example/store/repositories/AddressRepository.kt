@@ -1,38 +1,28 @@
 package com.example.store.repositories
 
 import com.example.store.models.Address
-import com.example.store.models.Product
-import com.example.store.models.User
 import com.example.store.services.AddressService
-import com.example.store.services.ProductService
-import com.example.store.services.UserService
-import retrofit2.Callback
 
 object AddressRepository {
     private val service = RetrofitBuilder.buildService(AddressService::class.java) as AddressService
 
-    fun getAddresses(callback: Callback<List<Address>>) {
-        val call = service.getAddresses()
-        call.enqueue(callback)
+    suspend fun getAddresses(): List<Address> {
+        return service.getAddresses()
     }
 
-    fun getAddress(id: Int, callback: Callback<Address?>) {
-        val call = service.getAddressByID(id)
-        call.enqueue(callback)
+    suspend fun getAddress(id: Int): Address {
+        return service.getAddressByID(id)
     }
 
-    fun createAddress(address: Address, callback: Callback<Address>) {
-        val call = service.createAddress(address)
-        call.enqueue(callback)
+    suspend fun createAddress(address: Address) {
+        return service.createAddress(address)
     }
 
-    fun updateAddress(id: Int, address: Address, callback: Callback<Address>) {
-        val call = service.updateAddress(id, address)
-        call.enqueue(callback)
+    suspend fun updateAddress(id: Int, address: Address) {
+        return service.updateAddress(id, address)
     }
 
-    fun deleteAddress(id: Int, callback: Callback<Address>) {
-        val call = service.deleteAddress(id)
-        call.enqueue(callback)
+    suspend fun deleteAddress(id: Int) {
+        return service.deleteAddress(id)
     }
 }

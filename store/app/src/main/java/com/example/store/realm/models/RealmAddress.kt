@@ -4,7 +4,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.Required
 
-open class Address(): RealmObject() {
+open class RealmAddress(): RealmObject() {
     @PrimaryKey
     var id: Int = 0
 
