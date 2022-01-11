@@ -19,13 +19,13 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text=""
-            app:layout_constraintBottom_toBottomOf="@+id/button3"
-            app:layout_constraintEnd_toStartOf="@+id/button3"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonAddToCart"
+            app:layout_constraintEnd_toStartOf="@+id/buttonAddToCart"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/button3" />
+            app:layout_constraintTop_toTopOf="@+id/buttonAddToCart" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/buttonAddToCart"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

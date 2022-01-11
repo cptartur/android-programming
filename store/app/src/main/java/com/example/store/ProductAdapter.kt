@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
+import com.example.store.models.Product
 
-class ProductAdapter(private val context: Context, private val list: List<String>) : BaseAdapter() {
+class ProductAdapter(private val context: Context, private val list: List<Product>) : BaseAdapter() {
 
     override fun getCount(): Int {
         return list.size
@@ -27,13 +27,13 @@ class ProductAdapter(private val context: Context, private val list: List<String
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val layoutInflater = LayoutInflater.from(context)
         val row = layoutInflater.inflate(R.layout.items_layout, parent, false)
-        val button = row.findViewById<Button>(R.id.button3)
+        val button = row.findViewById<Button>(R.id.buttonAddToCart)
         button.setOnClickListener{
             val intent = Intent(context, Cart::class.java)
             context.startActivity(intent)
         }
 
-        row.findViewById<TextView>(R.id.name).text = list[position]
+        row.findViewById<TextView>(R.id.name).text = list[position].toString()
 
         return row
     }
