@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d("token", token)
                 }
                 TokenManager.addGoogleAccount(this)
-                val intent = Intent(this, Products::class.java)
+                val intent = Intent(this, BottomNavigationActivity::class.java)
                 startActivity(intent)
             } catch (e: ApiException) {
                 Log.w("Sign in", "Sign in failed" + e.statusCode)

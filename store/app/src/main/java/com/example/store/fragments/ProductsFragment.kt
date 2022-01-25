@@ -38,16 +38,22 @@ class ProductsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_product_list, container, false)
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val products: List<RealmProduct>
-        runBlocking {
-            withContext(Dispatchers.IO) {
-                products = RealmProductRepository.getProducts()
-            }
+        runBlocking(Dispatchers.IO) {
+            products = RealmProductRepository.getProducts()
         }
+        val recyclerView = view.findViewById<RecyclerView>(R.id.list)
 
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
+        if (recyclerView is RecyclerView) {
+            with(recyclerView) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
@@ -60,7 +66,6 @@ class ProductsFragment : Fragment() {
                     })
             }
         }
-        return view
     }
 
     private fun addToCart(product: RealmProduct) {
