@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
                 if (token != null) {
                     Log.d("token", token)
                 }
+                TokenManager.addGoogleAccount(this)
                 val intent = Intent(this, Products::class.java)
                 startActivity(intent)
             } catch (e: ApiException) {
@@ -50,10 +51,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding : ActivityLoginBinding  = DataBindingUtil.setContentView(this, R.layout.activity_login)
         Realm.init(this)
-//        val job = CoroutineScope(Dispatchers.IO)
-//        job.launch {
-//            RealmUserRepository.syncUsers()
-//        }
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(BuildConfig.serverClientId)
             .requestEmail()

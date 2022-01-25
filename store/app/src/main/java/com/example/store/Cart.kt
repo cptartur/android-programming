@@ -64,13 +64,11 @@ class Cart : AppCompatActivity() {
                 return@launch
             }
             try {
-                val account = GoogleSignIn.getLastSignedInAccount(this@Cart)!!
-                val idToken = account.idToken!!
-                val token = AuthRepository.login(idToken).token
+                val token = TokenManager.getAuthToken(this@Cart) ?: ""
                 Log.d("cart token", token)
                 AuthRepository.testLogin(token)
 
-                fetchPaymentIntent(total, "1234")
+                fetchPaymentIntent(total, token)
                 paymentSheet.presentWithPaymentIntent(paymentIntentClientSecret, configuration)
             } catch (ex: HttpException) {
                 showHttpError(ex.code(), ex.message())
