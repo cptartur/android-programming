@@ -2,28 +2,28 @@ package com.example.store.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.store.R
-import com.example.store.models.Product
+import com.example.store.fragments.placeholder.PlaceholderContent
+import com.example.store.realm.RealmConfig
+import com.example.store.realm.models.RealmCart
 import com.example.store.realm.models.RealmProduct
 import com.example.store.realm.repositories.RealmCartRepository
-import com.example.store.realm.repositories.RealmProductRepository
-import com.example.store.repositories.ProductRepository
+import io.realm.Realm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.text.FieldPosition
 
-/**
- * A fragment representing a list of Items.
- */
-class ProductsFragment : Fragment() {
+class CartFragment : Fragment() {
 
     private var columnCount = 1
+    private lateinit var cart: RealmCart
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +37,11 @@ class ProductsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_product_list, container, false)
-        val products: List<RealmProduct>
+        val view = inflater.inflate(R.layout.fragment_cart_list, container, false)
+
         runBlocking {
             withContext(Dispatchers.IO) {
-                products = RealmProductRepository.getProducts()
+                cart = RealmCartRepository.getCart(0) ?: RealmCart()
             }
         }
 
@@ -52,21 +52,23 @@ class ProductsFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyProductsRecyclerViewAdapter(products as MutableList<RealmProduct>,
-                    object : OnAddToCartClickListener {
-                        override fun onAddToCart(product: RealmProduct) {
-                            addToCart(product)
-                        }
-                    })
+                adapter = MyCartRecyclerViewAdapter(cart.products ?: emptyList(),
+                object : OnRemoveItemListener {
+                    override fun onRemoveItem(item: RealmProduct, position: Int) {
+                        removeItem(item, position)
+                        adapter!!.notifyItemRemoved(position)
+                    }
+                })
             }
         }
         return view
     }
 
-    private fun addToCart(product: RealmProduct) {
+    private fun removeItem(item: RealmProduct, position: Int) {
         runBlocking {
             withContext(Dispatchers.IO) {
-                RealmCartRepository.addToCart(0, product)
+                RealmCartRepository.removeFromCart(0, item)
+                cart.products?.removeAt(position)
             }
         }
     }
@@ -79,7 +81,7 @@ class ProductsFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            ProductsFragment().apply {
+            CartFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }

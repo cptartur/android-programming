@@ -7,8 +7,8 @@ import io.realm.annotations.PrimaryKey
 import io.realm.annotations.Required
 
 open class RealmCart(): RealmObject() {
-    @PrimaryKey
-    var id: Int = 0
+//    @PrimaryKey
+//    var id: Int = 0
 
     var userId: Int = 0
 
