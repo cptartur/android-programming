@@ -15,12 +15,24 @@
         android:id="@+id/navigation_cart"
         android:name="com.example.store.fragments.CartFragment"
         android:label="Cart"
-        tools:layout="@layout/fragment_cart_list" />
+        tools:layout="@layout/fragment_cart_list" >
+        <action
+            android:id="@+id/action_navigation_cart_to_paymentSuccessfulFragment"
+            app:destination="@id/paymentSuccessfulFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_map"
         android:name="com.example.store.fragments.MapsFragment"
         android:label="Map"
         tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/paymentSuccessfulFragment"
+        android:name="com.example.store.fragments.PaymentSuccessfulFragment"
+        android:label="PaymentSuccessfulFragment" >
+        <action
+            android:id="@+id/action_paymentSuccessfulFragment_to_navigation_cart"
+            app:destination="@id/navigation_cart" />
+    </fragment>
 
 </navigation>

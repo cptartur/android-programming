@@ -1,6 +1,9 @@
 package com.example.store
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import androidx.activity.addCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -29,6 +32,14 @@ class BottomNavigationActivity : AppCompatActivity() {
                 R.id.navigation_products, R.id.navigation_cart, R.id.navigation_map
             )
         )
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            if (destination.id == R.id.paymentSuccessfulFragment) {
+                navView.visibility = View.GONE
+            } else {
+                navView.visibility = View.VISIBLE
+            }
+        }
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }

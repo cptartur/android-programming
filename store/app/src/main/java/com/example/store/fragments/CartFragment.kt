@@ -12,14 +12,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.example.store.R
 import com.example.store.TokenManager
-import com.example.store.databinding.ActivityCartBinding
-import com.example.store.databinding.FragmentCartBinding
 import com.example.store.databinding.FragmentCartListBinding
-import com.example.store.fragments.placeholder.PlaceholderContent
 import com.example.store.models.PaymentTotal
-import com.example.store.realm.RealmConfig
 import com.example.store.realm.models.RealmCart
 import com.example.store.realm.models.RealmProduct
 import com.example.store.realm.repositories.RealmCartRepository
@@ -28,13 +25,11 @@ import com.example.store.repositories.PaymentRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
-import io.realm.Realm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import java.text.FieldPosition
 
 class CartFragment : Fragment() {
 
@@ -187,12 +182,12 @@ class CartFragment : Fragment() {
                 binding.buttonPay.visibility = View.GONE
                 binding.progressBar.visibility = View.GONE
                 binding.list.visibility = View.GONE
-                binding.checkmark.visibility = View.VISIBLE
-                binding.textSuccess.visibility = View.VISIBLE
                 runBlocking(Dispatchers.IO) {
                     RealmCartRepository.removeCart(0)
                     RealmCartRepository.createCart(0)
                 }
+                val action = CartFragmentDirections.actionNavigationCartToPaymentSuccessfulFragment()
+                binding.root.findNavController().navigate(action)
             }
             is PaymentSheetResult.Canceled -> {
                 binding.progressBar.visibility = View.GONE

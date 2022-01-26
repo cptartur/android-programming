@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_signup_navigation"
+    app:startDestination="@id/loginSignupFragment">
+
+    <fragment
+        android:id="@+id/loginSignupFragment"
+        android:name="com.example.store.fragments.LoginSignupFragment"
+        android:label="fragment_login_signup"
+        tools:layout="@layout/fragment_login_signup" >
+        <action
+            android:id="@+id/action_loginSignupFragment_to_localSignupFragment"
+            app:destination="@id/localSignupFragment" />
+        <action
+            android:id="@+id/action_loginSignupFragment_to_localLoginFragment"
+            app:destination="@id/localLoginFragment" />
+        <action
+            android:id="@+id/action_loginSignupFragment_to_bottomNavigationActivity"
+            app:destination="@id/bottomNavigationActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/localLoginFragment"
+        android:name="com.example.store.fragments.LocalLoginFragment"
+        android:label="fragment_local_login"
+        tools:layout="@layout/fragment_local_login" >
+        <action
+            android:id="@+id/action_localLoginFragment_to_bottomNavigationActivity"
+            app:popUpTo="@id/loginSignupFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/bottomNavigationActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/localSignupFragment"
+        android:name="com.example.store.fragments.LocalSignupFragment"
+        android:label="fragment_local_signup"
+        tools:layout="@layout/fragment_local_signup" >
+        <action
+            android:id="@+id/action_localSignupFragment_to_localLoginFragment"
+            app:popUpTo="@id/loginSignupFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/localLoginFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/bottomNavigationActivity"
+        android:name="com.example.store.BottomNavigationActivity"
+        android:label="BottomNavigationActivity" />
+</navigation>

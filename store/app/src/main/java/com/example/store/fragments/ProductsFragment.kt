@@ -1,11 +1,13 @@
 package com.example.store.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.store.R
@@ -14,9 +16,7 @@ import com.example.store.realm.models.RealmProduct
 import com.example.store.realm.repositories.RealmCartRepository
 import com.example.store.realm.repositories.RealmProductRepository
 import com.example.store.repositories.ProductRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 /**
  * A fragment representing a list of Items.
@@ -24,6 +24,7 @@ import kotlinx.coroutines.withContext
 class ProductsFragment : Fragment() {
 
     private var columnCount = 1
+    private var products: List<RealmProduct> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +46,6 @@ class ProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val products: List<RealmProduct>
         runBlocking(Dispatchers.IO) {
             products = RealmProductRepository.getProducts()
         }
