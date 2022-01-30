@@ -89,12 +89,9 @@ class CartFragment : Fragment() {
 
                     override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
                         super.onItemRangeRemoved(positionStart, itemCount)
-                        Log.d("observer", "observing")
                         if (adapter.itemCount == 0) {
-                            Log.d("observer", " listSize == 0 ")
                             payButton.visibility = View.GONE
                         } else {
-                            Log.d("observer", " listSize != 0 ")
                             payButton.visibility = View.VISIBLE
                         }
                     }
@@ -150,7 +147,6 @@ class CartFragment : Fragment() {
             }
             try {
                 val token = TokenManager.getAuthToken(requireContext()) ?: ""
-                Log.d("cart token", token)
                 AuthRepository.testLogin(token)
 
                 fetchPaymentIntent(total, token)

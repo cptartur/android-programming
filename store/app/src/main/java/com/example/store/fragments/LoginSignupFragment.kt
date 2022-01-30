@@ -71,11 +71,7 @@ class LoginSignupFragment : Fragment() {
             val data = result.data
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                val account = task.getResult(ApiException::class.java)
-                val token = account.idToken
-                if (token != null) {
-                    Log.d("token", token)
-                }
+                task.getResult(ApiException::class.java)
                 TokenManager.addGoogleAccount(requireContext())
                 val activity = LoginSignupFragmentDirections.actionLoginSignupFragmentToBottomNavigationActivity()
                 view?.findNavController()?.navigate(activity)

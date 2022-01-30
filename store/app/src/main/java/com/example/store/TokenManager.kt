@@ -19,7 +19,6 @@ object TokenManager {
             UserType.GOOGLE -> {
                 val account = GoogleSignIn.getLastSignedInAccount(context) ?: return null
                 runBlocking(Dispatchers.IO) {
-                    Log.d("dupa", "dupa2")
                     authToken = AuthRepository.login(account.idToken!!).token
                 }
             }
