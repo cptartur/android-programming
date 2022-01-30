@@ -11,6 +11,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.store.databinding.ActivityBottomNavigationBinding
+import com.example.store.realm.repositories.RealmProductRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
 class BottomNavigationActivity : AppCompatActivity() {
 
@@ -42,5 +45,7 @@ class BottomNavigationActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        runBlocking(Dispatchers.IO) { RealmProductRepository.syncProducts() }
     }
 }
