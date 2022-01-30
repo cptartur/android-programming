@@ -26,6 +26,11 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:0.36.1")
     implementation("org.jetbrains.exposed:exposed-dao:0.36.1")
     implementation("org.xerial:sqlite-jdbc:3.36.0.2")
+    implementation("io.ktor:ktor-auth:$ktor_version")
+    implementation("io.ktor:ktor-auth-jwt:$ktor_version")
+    implementation("com.google.api-client:google-api-client:1.33.0")
+    implementation("com.stripe:stripe-java:20.94.0")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
 }
