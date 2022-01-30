@@ -2,7 +2,6 @@ package com.example.repositories
 
 import com.example.models.Cart
 import com.example.tables.Carts
-import com.example.tables.Products
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 

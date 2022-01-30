@@ -2,8 +2,6 @@ package com.example.repositories
 
 import com.example.models.Address
 import com.example.tables.Addresses
-import com.example.tables.Categories
-import com.example.tables.Users
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 

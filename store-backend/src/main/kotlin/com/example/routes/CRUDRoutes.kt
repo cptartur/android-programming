@@ -1,13 +1,11 @@
 package com.example.routes
 
-import com.example.repositories.ProductRepository
 import com.example.repositories.Repository
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import kotlin.reflect.KClass
 
 
 inline fun <reified TModel: Any> Application.configureCRUDRoutes(

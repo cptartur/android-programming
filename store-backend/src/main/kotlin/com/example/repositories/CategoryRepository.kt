@@ -1,15 +1,9 @@
 package com.example.repositories
 
 import com.example.models.Category
-import com.example.models.Product
-import com.example.models.User
 import com.example.tables.Categories
-import com.example.tables.Products
-import com.example.tables.Users
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
-import kotlin.reflect.typeOf
 
 object CategoryRepository : Repository<Category> {
 

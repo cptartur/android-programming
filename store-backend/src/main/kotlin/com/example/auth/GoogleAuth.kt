@@ -8,7 +8,7 @@ import com.google.api.client.json.gson.GsonFactory
 import java.util.*
 
 object GoogleAuth {
-    
+
     private val transport = NetHttpTransport()
     private val gsonFactory = GsonFactory()
     private val verifier = GoogleIdTokenVerifier.Builder(transport, gsonFactory)

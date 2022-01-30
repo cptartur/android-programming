@@ -1,7 +1,5 @@
 package com.example.repositories
 
-import com.example.models.Product
-
 interface Repository<T> {
     fun create(obj: T): Int
     fun update(id: Int, obj: T): Boolean

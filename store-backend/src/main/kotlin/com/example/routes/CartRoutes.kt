@@ -40,7 +40,7 @@ fun Application.configureCartRoutes() {
         }
 
         put("/$baseString/{cart_id}") {
-            val userID = call.parameters["user_id"]?.toInt()
+            call.parameters["user_id"]?.toInt()
             val cartID = call.parameters["cart_id"]?.toInt()
             val products = Gson().fromJson<List<ProductAndAmount>>(call.receive())
             products.map {
@@ -63,10 +63,8 @@ fun Application.configureCartRoutes() {
         delete("/$baseString/{cart_id}/{product_id}") {
             val cartID = call.parameters["cart_id"]?.toInt()
             val productID = call.parameters["product_id"]?.toInt()
-            if (cartID != null && productID != null) {
-                if (cartProductRepository.remove(cartID, productID)) {
-                    call.response.status(HttpStatusCode.OK)
-                }
+            if (cartID != null && productID != null && cartProductRepository.remove(cartID, productID)) {
+                call.response.status(HttpStatusCode.OK)
             }
         }
     }

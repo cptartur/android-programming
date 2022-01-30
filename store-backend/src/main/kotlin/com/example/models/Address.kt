@@ -1,7 +1,6 @@
 package com.example.models
 
 import com.example.tables.Addresses
-import com.example.tables.Carts
 import org.jetbrains.exposed.sql.ResultRow
 
 data class Address(

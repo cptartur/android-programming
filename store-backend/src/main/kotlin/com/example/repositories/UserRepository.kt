@@ -1,13 +1,9 @@
 package com.example.repositories
 
-import com.example.models.Product
 import com.example.models.User
 import com.example.models.UserType
-import com.example.tables.Products
 import com.example.tables.Users
-import com.example.tables.Users.type
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object UserRepository: Repository<User> {
