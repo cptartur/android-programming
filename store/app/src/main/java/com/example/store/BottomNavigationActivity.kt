@@ -32,7 +32,7 @@ class BottomNavigationActivity : AppCompatActivity() {
                 R.id.navigation_products, R.id.navigation_cart, R.id.navigation_map
             )
         )
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.paymentSuccessfulFragment) {
                 navView.visibility = View.GONE
             } else {

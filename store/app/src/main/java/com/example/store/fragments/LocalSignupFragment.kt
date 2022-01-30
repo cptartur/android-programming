@@ -8,13 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import com.example.store.R
 import com.example.store.databinding.FragmentLocalSignupBinding
 import com.example.store.models.User
 import com.example.store.models.UserType
-import com.example.store.realm.repositories.RealmUserRepository
 import com.example.store.repositories.UserRepository
-import com.example.store.services.UserService
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -81,9 +78,8 @@ class LocalSignupFragment : Fragment() {
     }
 
     companion object {
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             LocalSignupFragment().apply {
                 arguments = Bundle().apply {
                 }

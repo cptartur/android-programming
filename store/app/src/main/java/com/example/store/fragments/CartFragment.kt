@@ -109,7 +109,7 @@ class CartFragment : Fragment() {
         }
 
         payButton.setOnClickListener {
-            onPayClicked(it)
+            onPayClicked()
         }
 
         paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
@@ -134,7 +134,7 @@ class CartFragment : Fragment() {
         paymentIntentClientSecret = PaymentRepository.createPaymentIntent(PaymentTotal(total * 100), token).clientSecret
     }
 
-    private fun onPayClicked(view: View) {
+    private fun onPayClicked() {
         val configuration = PaymentSheet.Configuration("Store")
         lifecycleScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
@@ -170,7 +170,7 @@ class CartFragment : Fragment() {
                 .setTitle("Server error")
                 .setMessage("An error occurred trying to process your payment request\n Server Error: ${code}: $message")
                 .setNegativeButton("Accept") { _, _ -> }
-                .setPositiveButton("Retry") { _, _ -> onPayClicked(View(context)) }
+                .setPositiveButton("Retry") { _, _ -> onPayClicked() }
                 .show()
         }
     }
@@ -197,10 +197,8 @@ class CartFragment : Fragment() {
 
     companion object {
 
-        // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
 
-        // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
             CartFragment().apply {

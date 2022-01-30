@@ -49,7 +49,7 @@ class LocalLoginFragment : Fragment() {
         val password = binding.loginPassword.editText?.text.toString()
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val token = AuthRepository.localLogin(email, password)
+                AuthRepository.localLogin(email, password)
                 TokenManager.addLocalAccount(requireContext(), email, password)
                 activity?.runOnUiThread {
                     val action = LocalLoginFragmentDirections.actionLocalLoginFragmentToBottomNavigationActivity()

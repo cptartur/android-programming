@@ -1,7 +1,6 @@
 package com.example.store.fragments
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.findNavController
-import com.example.store.BottomNavigationActivity
 import com.example.store.BuildConfig
 import com.example.store.R
 import com.example.store.TokenManager
@@ -60,10 +58,10 @@ class LoginSignupFragment : Fragment() {
         }
 
         val googleSigninButton = view.findViewById<SignInButton>(R.id.googleButton)
-        googleSigninButton.setOnClickListener { startGoogleSignIn(it) }
+        googleSigninButton.setOnClickListener { startGoogleSignIn() }
     }
 
-    private fun startGoogleSignIn(view: View) {
+    private fun startGoogleSignIn() {
         val signInIntent = signInClient.signInIntent
         signInLauncher.launch(signInIntent)
     }
@@ -88,7 +86,7 @@ class LoginSignupFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             LoginSignupFragment().apply {
                 arguments = Bundle().apply {
                 }

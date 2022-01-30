@@ -2,12 +2,9 @@ package com.example.store.fragments
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
 import com.example.store.databinding.FragmentProductBinding
-import com.example.store.models.Product
 import com.example.store.realm.models.RealmProduct
 
 class MyProductsRecyclerViewAdapter(

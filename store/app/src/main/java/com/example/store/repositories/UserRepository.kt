@@ -1,10 +1,7 @@
 package com.example.store.repositories
 
-import com.example.store.models.Product
 import com.example.store.models.User
-import com.example.store.services.ProductService
 import com.example.store.services.UserService
-import retrofit2.Callback
 
 object UserRepository {
     private val service = RetrofitBuilder.buildService(UserService::class.java) as UserService
