@@ -14,7 +14,7 @@ object RealmCartRepository {
         val cart = realm.where(RealmCart::class.java)
             .equalTo("userId", userId)
             .findFirst()
-        return realm.copyFromRealm(cart)
+        return cart?.let { realm.copyFromRealm(it) }
     }
 
 //    fun getCart(userId: Int, cartId: Int): RealmCart? {
@@ -56,7 +56,7 @@ object RealmCartRepository {
             val cart = realmTransaction.where(RealmCart::class.java)
                 .equalTo("userId", userId)
                 .findFirst()!!
-            cart.products?.let { it.add(product) } ?: run {cart.products = RealmList(product) }
+            cart.products?.add(product) ?: run {cart.products = RealmList(product) }
         }
     }
 

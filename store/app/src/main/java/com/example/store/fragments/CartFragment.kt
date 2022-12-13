@@ -58,7 +58,10 @@ class CartFragment : Fragment() {
 
         runBlocking {
             withContext(Dispatchers.IO) {
-                cart = RealmCartRepository.getCart(0) ?: RealmCart()
+                cart = RealmCartRepository.getCart(0) ?: kotlin.run {
+                    RealmCartRepository.createCart(0)
+                    RealmCartRepository.getCart(0)!!
+                }
             }
         }
         return view
