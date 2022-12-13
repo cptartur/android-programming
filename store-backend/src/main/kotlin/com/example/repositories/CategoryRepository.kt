@@ -40,6 +40,13 @@ object CategoryRepository : Repository<Category> {
         return resultRow?.let { Category.fromRow(it) }
     }
 
+    fun findByName(name: String): Category? {
+        val resultRow = transaction {
+            Categories.select { Categories.name eq name }.firstOrNull()
+        }
+        return resultRow?.let { Category.fromRow(it) }
+    }
+
     override fun findAll(): List<Category> {
         return transaction {
             Categories.selectAll().map { Category.fromRow(it) }

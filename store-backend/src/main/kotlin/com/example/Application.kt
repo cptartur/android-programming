@@ -6,12 +6,8 @@ import com.example.plugins.configureRouting
 import com.example.plugins.configureSerialization
 import com.example.repositories.AddressRepository
 import com.example.repositories.CategoryRepository
-import com.example.repositories.ProductRepository
 import com.example.repositories.UserRepository
-import com.example.routes.configureAuthRoutes
-import com.example.routes.configureCRUDRoutes
-import com.example.routes.configureCartRoutes
-import com.example.routes.configurePaymentRoutes
+import com.example.routes.*
 import com.example.tables.*
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -56,10 +52,10 @@ fun main() {
             }
         }
         configureCRUDRoutes("user", UserRepository)
-        configureCRUDRoutes("product", ProductRepository)
         configureCRUDRoutes("category", CategoryRepository)
         configureCRUDRoutes("address", AddressRepository)
         configureCartRoutes()
+        configureProductRoutes()
         configureAuthRoutes()
         configurePaymentRoutes()
         configureRouting()

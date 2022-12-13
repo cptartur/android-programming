@@ -21,7 +21,7 @@ object ProductRepository : Repository<Product> {
 
     override fun update(id: Int, obj: Product): Boolean {
         transaction {
-            Products.update({Products.id eq id}) {
+            Products.update({ Products.id eq id }) {
                 it[name] = obj.name
                 it[description] = obj.description
                 it[price] = obj.price
@@ -49,6 +49,26 @@ object ProductRepository : Repository<Product> {
     override fun findAll(): List<Product> {
         return transaction {
             Products.selectAll().map { Product.fromRow(it) }
+        }
+    }
+
+    fun findByNameAndCategory(name: String? = null, categoryName: String? = null): List<Product> {
+        val categoryId = categoryName?.let { CategoryRepository.findByName(it)?.id }
+        val condition = when {
+            name != null && categoryId != null ->
+                Op.build { (Products.name like "$name%") and (Products.categoryId eq categoryId) }
+
+            name != null ->
+                Op.build { Products.name like "$name%" }
+
+            categoryId != null ->
+                Op.build { Products.categoryId eq categoryId }
+
+            else -> null
+        }
+        return transaction {
+            val query = condition?.let { Products.select(it) } ?: Products.selectAll()
+            query.map { Product.fromRow(it) }
         }
     }
 }
