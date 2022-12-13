@@ -7,26 +7,26 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 object ProductRepository : Repository<Product> {
 
-    override fun create(product: Product): Int {
+    override fun create(obj: Product): Int {
         val id = transaction {
             Products.insertAndGetId {
-                it[name] = product.name
-                it[description] = product.description
-                it[price] = product.price
-                it[categoryId] = product.categoryId
+                it[name] = obj.name
+                it[description] = obj.description
+                it[price] = obj.price
+                it[categoryId] = obj.categoryId
             }
         }
         return id.value
     }
 
-    override fun update(id: Int, product: Product): Boolean {
+    override fun update(id: Int, obj: Product): Boolean {
         transaction {
             Products.update({Products.id eq id}) {
-                it[name] = product.name
-                it[description] = product.description
-                it[price] = product.price
+                it[name] = obj.name
+                it[description] = obj.description
+                it[price] = obj.price
                 it[Products.id] = Products.select { Products.id eq id }.first()[Products.id]
-                it[categoryId] = product.categoryId
+                it[categoryId] = obj.categoryId
             }
         }
         return true

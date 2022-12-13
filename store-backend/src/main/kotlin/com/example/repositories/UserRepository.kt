@@ -8,26 +8,26 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 object UserRepository: Repository<User> {
 
-    override fun create(user: User): Int {
+    override fun create(obj: User): Int {
         val id = transaction {
             Users.insertAndGetId {
-                it[name] = user.name
-                it[email] = user.email ?: ""
-                it[password] = if (user.type == UserType.LOCAL) User.generatePasswordHash(user.password!!) else ""
-                it[type] = user.type.toString()
+                it[name] = obj.name
+                it[email] = obj.email ?: ""
+                it[password] = if (obj.type == UserType.LOCAL) User.generatePasswordHash(obj.password!!) else ""
+                it[type] = obj.type.toString()
             }
         }
         return id.value
     }
 
-    override fun update(id: Int, user: User): Boolean {
+    override fun update(id: Int, obj: User): Boolean {
         transaction {
             Users.update({Users.id eq id}) {
                 it[Users.id] = Users.select { Users.id eq id }.first()[Users.id]
-                it[name] = user.name
-                it[email] = user.email ?: ""
-                it[password] = if (user.type == UserType.LOCAL) User.generatePasswordHash(user.password!!) else ""
-                it[type] = user.type.toString()
+                it[name] = obj.name
+                it[email] = obj.email ?: ""
+                it[password] = if (obj.type == UserType.LOCAL) User.generatePasswordHash(obj.password!!) else ""
+                it[type] = obj.type.toString()
             }
         }
         return true

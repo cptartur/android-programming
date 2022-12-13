@@ -7,29 +7,29 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 object AddressRepository : Repository<Address> {
 
-    override fun create(address: Address): Int {
+    override fun create(obj: Address): Int {
         val id = transaction {
             Addresses.insertAndGetId {
-                it[id] = address.id
-                it[streetAddress] = address.streetAddress
-                it[postalCode] = address.postalCode
-                it[city] = address.city
-                it[phoneNumber] = address.phoneNumber
-                it[userId] = address.userId
+                it[id] = obj.id
+                it[streetAddress] = obj.streetAddress
+                it[postalCode] = obj.postalCode
+                it[city] = obj.city
+                it[phoneNumber] = obj.phoneNumber
+                it[userId] = obj.userId
             }
         }
         return id.value
     }
 
-    override fun update(id: Int, address: Address): Boolean {
+    override fun update(id: Int, obj: Address): Boolean {
         transaction {
             Addresses.update({Addresses.id eq id}) {
                 it[Addresses.id] = Addresses.select {Addresses.id eq id}.first()[Addresses.id]
-                it[streetAddress] = address.streetAddress
-                it[postalCode] = address.postalCode
-                it[city] = address.city
-                it[phoneNumber] = address.phoneNumber
-                it[userId] = address.userId
+                it[streetAddress] = obj.streetAddress
+                it[postalCode] = obj.postalCode
+                it[city] = obj.city
+                it[phoneNumber] = obj.phoneNumber
+                it[userId] = obj.userId
             }
         }
         return true
