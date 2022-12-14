@@ -1,10 +1,12 @@
 package com.example.routes
 
 import com.example.Secrets
-import com.google.gson.Gson
 import com.stripe.Stripe
+import com.stripe.model.Customer
+import com.stripe.model.EphemeralKey
 import com.stripe.model.PaymentIntent
-import com.stripe.model.Product
+import com.stripe.param.CustomerCreateParams
+import com.stripe.param.EphemeralKeyCreateParams
 import com.stripe.param.PaymentIntentCreateParams
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -21,6 +23,16 @@ fun Application.configurePaymentRoutes() {
             post("$baseString/create-payment-intent") {
                 val total = call.receive<PaymentTotal>()
                 println(total.total)
+
+                val customerParams = CustomerCreateParams.builder().build()
+                val customer = Customer.create(customerParams)
+
+                val ephemeralKeyParams = EphemeralKeyCreateParams.builder()
+                    .setStripeVersion("2022-11-15")
+                    .setCustomer(customer.id)
+                    .build()
+                val ephemeralKey = EphemeralKey.create(ephemeralKeyParams)
+
                 val params = PaymentIntentCreateParams.builder()
                     .setAmount(total.total)
                     .setCurrency("usd")
@@ -29,10 +41,18 @@ fun Application.configurePaymentRoutes() {
                             .setEnabled(true)
                             .build()
                     )
+                    .setCustomer(customer.id)
                     .build()
-
                 val paymentIntent = PaymentIntent.create(params)
-                call.respond(hashMapOf("clientSecret" to paymentIntent.clientSecret))
+
+                call.respond(
+                    hashMapOf(
+                        "clientSecret" to paymentIntent.clientSecret,
+                        "ephemeralKey" to ephemeralKey.secret,
+                        "customer" to customer.id,
+                        "publishableKey" to Secrets.STRIPE_PUBLIC_KEY,
+                    )
+                )
             }
         }
     }
