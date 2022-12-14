@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -47,6 +48,19 @@ class ProductsFragment : Fragment() {
             products = RealmProductRepository.getProducts()
         }
         val recyclerView = view.findViewById<RecyclerView>(R.id.list)
+        val searchView = view.findViewById<SearchView>(R.id.searchView)
+        val productAdapter = MyProductsRecyclerViewAdapter(products as MutableList<RealmProduct>,
+            object : OnAddToCartClickListener {
+                override fun onAddToCart(product: RealmProduct) {
+                    addToCart(product)
+                }
+            },
+            object : OnDetailsClickListener {
+                override fun onDetails(product: RealmProduct) {
+                    details(product)
+                }
+            }
+        )
 
         // Set the adapter
         if (recyclerView is RecyclerView) {
@@ -55,20 +69,28 @@ class ProductsFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyProductsRecyclerViewAdapter(products as MutableList<RealmProduct>,
-                    object : OnAddToCartClickListener {
-                        override fun onAddToCart(product: RealmProduct) {
-                            addToCart(product)
-                        }
-                    },
-                    object : OnDetailsClickListener {
-                        override fun onDetails(product: RealmProduct) {
-                            details(product)
-                        }
-                    }
-                )
+                adapter = productAdapter
             }
         }
+
+        setupSearchView(searchView, productAdapter)
+    }
+
+    private fun setupSearchView(searchView: SearchView, adapter: MyProductsRecyclerViewAdapter) {
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    p0?.let { adapter.filter(it) }
+                    return true
+                }
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    p0?.let { adapter.filter(it) }
+                    return true
+                }
+
+            }
+        )
     }
 
     private fun addToCart(product: RealmProduct) {
@@ -81,7 +103,8 @@ class ProductsFragment : Fragment() {
 
     private fun details(product: RealmProduct) {
         Log.d("Details", "Details clicked.")
-        val action = ProductsFragmentDirections.actionNavigationProductsToProductDetailsFragment(product.id)
+        val action =
+            ProductsFragmentDirections.actionNavigationProductsToProductDetailsFragment(product.id)
         view?.findNavController()?.navigate(action)
     }
 

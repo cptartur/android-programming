@@ -1,17 +1,18 @@
 package com.example.store.fragments
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.example.store.databinding.FragmentProductBinding
 import com.example.store.realm.models.RealmProduct
 
 class MyProductsRecyclerViewAdapter(
-    private val values: MutableList<RealmProduct>,
+    private var values: MutableList<RealmProduct>,
     private val listener: OnAddToCartClickListener,
     private val detailsListener: OnDetailsClickListener,
 ) : RecyclerView.Adapter<MyProductsRecyclerViewAdapter.ViewHolder>() {
+    private var valuesCopy: MutableList<RealmProduct> = values.toMutableList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -32,7 +33,8 @@ class MyProductsRecyclerViewAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: FragmentProductBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(binding: FragmentProductBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         val name: TextView = binding.name
         val description: TextView = binding.description
         val price: TextView = binding.price
@@ -49,6 +51,12 @@ class MyProductsRecyclerViewAdapter(
             addToCartButton.setOnClickListener { listener.onAddToCart(product) }
             name.setOnClickListener { detailsListener.onDetails(product) }
         }
+    }
+
+    fun filter(query: String) {
+        values =
+            valuesCopy.filter { it.name.lowercase().startsWith(query.lowercase()) }.toMutableList()
+        notifyDataSetChanged()
     }
 }
 
