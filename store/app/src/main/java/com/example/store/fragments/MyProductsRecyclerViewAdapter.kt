@@ -9,7 +9,8 @@ import com.example.store.realm.models.RealmProduct
 
 class MyProductsRecyclerViewAdapter(
     private val values: MutableList<RealmProduct>,
-    private val listener: OnAddToCartClickListener
+    private val listener: OnAddToCartClickListener,
+    private val detailsListener: OnDetailsClickListener,
 ) : RecyclerView.Adapter<MyProductsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,10 +47,15 @@ class MyProductsRecyclerViewAdapter(
             description.text = product.description
             price.text = "$" + product.price
             addToCartButton.setOnClickListener { listener.onAddToCart(product) }
+            name.setOnClickListener { detailsListener.onDetails(product) }
         }
     }
 }
 
 interface OnAddToCartClickListener {
     fun onAddToCart(product: RealmProduct)
+}
+
+interface OnDetailsClickListener {
+    fun onDetails(product: RealmProduct)
 }

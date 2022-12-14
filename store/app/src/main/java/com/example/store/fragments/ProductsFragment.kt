@@ -1,18 +1,22 @@
 package com.example.store.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.store.R
 import com.example.store.realm.models.RealmProduct
 import com.example.store.realm.repositories.RealmCartRepository
 import com.example.store.realm.repositories.RealmProductRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class ProductsFragment : Fragment() {
 
@@ -56,7 +60,13 @@ class ProductsFragment : Fragment() {
                         override fun onAddToCart(product: RealmProduct) {
                             addToCart(product)
                         }
-                    })
+                    },
+                    object : OnDetailsClickListener {
+                        override fun onDetails(product: RealmProduct) {
+                            details(product)
+                        }
+                    }
+                )
             }
         }
     }
@@ -67,6 +77,12 @@ class ProductsFragment : Fragment() {
                 RealmCartRepository.addToCart(0, product)
             }
         }
+    }
+
+    private fun details(product: RealmProduct) {
+        Log.d("Details", "Details clicked.")
+        val action = ProductsFragmentDirections.actionNavigationProductsToProductDetailsFragment(product.id)
+        view?.findNavController()?.navigate(action)
     }
 
     companion object {

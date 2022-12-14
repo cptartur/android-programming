@@ -9,7 +9,11 @@
         android:id="@+id/navigation_products"
         android:name="com.example.store.fragments.ProductsFragment"
         android:label="Products"
-        tools:layout="@layout/fragment_product_list" />
+        tools:layout="@layout/fragment_product_list" >
+        <action
+            android:id="@+id/action_navigation_products_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_cart"
@@ -33,6 +37,15 @@
         <action
             android:id="@+id/action_paymentSuccessfulFragment_to_navigation_cart"
             app:destination="@id/navigation_cart" />
+    </fragment>
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        android:name="com.example.store.fragments.ProductDetailsFragment"
+        android:label="fragment_product_details"
+        tools:layout="@layout/fragment_product_details" >
+        <argument
+            android:name="productId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

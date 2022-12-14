@@ -1,10 +1,8 @@
 package com.example.store
 
 import android.os.Bundle
-import android.util.Log
+import android.view.MenuItem
 import android.view.View
-import androidx.activity.addCallback
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -12,6 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.store.databinding.ActivityBottomNavigationBinding
 import com.example.store.realm.repositories.RealmProductRepository
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
@@ -47,5 +46,15 @@ class BottomNavigationActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         runBlocking(Dispatchers.IO) { RealmProductRepository.syncProducts() }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
