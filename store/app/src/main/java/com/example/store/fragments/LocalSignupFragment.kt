@@ -21,16 +21,11 @@ class LocalSignupFragment : Fragment() {
 
     private lateinit var binding: FragmentLocalSignupBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_local_signup, container, false)
         binding = FragmentLocalSignupBinding.inflate(inflater, container, false)
         return binding.root
     }
