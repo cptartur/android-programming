@@ -16,6 +16,7 @@ import androidx.navigation.findNavController
 import com.example.store.R
 import com.example.store.TokenManager
 import com.example.store.databinding.FragmentCartListBinding
+import com.example.store.models.PaymentIntent
 import com.example.store.models.PaymentTotal
 import com.example.store.realm.models.RealmCart
 import com.example.store.realm.models.RealmProduct
@@ -23,6 +24,7 @@ import com.example.store.realm.repositories.RealmCartRepository
 import com.example.store.repositories.AuthRepository
 import com.example.store.repositories.PaymentRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.stripe.android.PaymentConfiguration
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +39,7 @@ class CartFragment : Fragment() {
     private lateinit var cart: RealmCart
 
     private lateinit var paymentSheet: PaymentSheet
-    private lateinit var paymentIntentClientSecret: String
+    private lateinit var paymentIntent: PaymentIntent
     private lateinit var binding: FragmentCartListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -131,11 +133,10 @@ class CartFragment : Fragment() {
     }
 
     private suspend fun fetchPaymentIntent(total: Long, token: String) {
-        paymentIntentClientSecret = PaymentRepository.createPaymentIntent(PaymentTotal(total * 100), token).clientSecret
+        paymentIntent = PaymentRepository.createPaymentIntent(PaymentTotal(total * 100), token)
     }
 
     private fun onPayClicked() {
-        val configuration = PaymentSheet.Configuration("Store")
         lifecycleScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 binding.progressBar.visibility = View.VISIBLE
@@ -149,12 +150,36 @@ class CartFragment : Fragment() {
                 return@launch
             }
             try {
-                val token = TokenManager.getAuthToken(requireContext()) ?: ""
+                val token = TokenManager.getAuthToken(requireContext()) ?: kotlin.run {
+                    showHttpError(1,"Failed to get auth token")
+                    return@launch
+                }
+
+                Log.d("Payment", "Got auth token $token")
+
                 AuthRepository.testLogin(token)
+                Log.d("Payment", "Tested login")
 
                 fetchPaymentIntent(total, token)
-                paymentSheet.presentWithPaymentIntent(paymentIntentClientSecret, configuration)
+                Log.d("Payment", "Fetched payment intent")
+
+                val paymentIntentClientSecret = paymentIntent.clientSecret
+                val customerConfig = PaymentSheet.CustomerConfiguration(
+                    paymentIntent.customer,
+                    paymentIntent.ephemeralKey
+                )
+                val publishableKey = paymentIntent.publishableKey
+                PaymentConfiguration.init(requireContext(), publishableKey)
+
+                paymentSheet.presentWithPaymentIntent(
+                    paymentIntentClientSecret,
+                    PaymentSheet.Configuration(
+                        merchantDisplayName = "Store",
+                        customer = customerConfig,
+                    )
+                )
             } catch (ex: HttpException) {
+                Log.d("HttpException", ex.message())
                 showHttpError(ex.code(), ex.message())
             }
         }
@@ -178,9 +203,9 @@ class CartFragment : Fragment() {
         when (paymentResult) {
             is PaymentSheetResult.Completed -> {
                 showToast("Payment successful")
-                binding.buttonPay.visibility = View.GONE
-                binding.progressBar.visibility = View.GONE
-                binding.list.visibility = View.GONE
+//                binding.buttonPay.visibility = View.GONE
+//                binding.progressBar.visibility = View.GONE
+//                binding.list.visibility = View.GONE
                 runBlocking(Dispatchers.IO) {
                     RealmCartRepository.removeCart(0)
                     RealmCartRepository.createCart(0)
@@ -189,9 +214,15 @@ class CartFragment : Fragment() {
                 binding.root.findNavController().navigate(action)
             }
             is PaymentSheetResult.Canceled -> {
-                binding.progressBar.visibility = View.GONE
+                showToast("Payment cancelled")
+            }
+            is PaymentSheetResult.Failed -> {
+                showHttpError(1, "Payment failed: ${paymentResult.error}")
             }
         }
+        binding.buttonPay.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+        binding.list.visibility = View.GONE
     }
 
     companion object {

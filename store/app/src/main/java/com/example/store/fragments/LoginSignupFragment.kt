@@ -72,7 +72,7 @@ class LoginSignupFragment : Fragment() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 task.getResult(ApiException::class.java)
-                TokenManager.addGoogleAccount(requireContext())
+                TokenManager.addGoogleAccount()
                 val activity = LoginSignupFragmentDirections.actionLoginSignupFragmentToBottomNavigationActivity()
                 view?.findNavController()?.navigate(activity)
             } catch (e: ApiException) {
