@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.store"
         minSdk 26
-        targetSdk 31
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -63,5 +63,5 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
     implementation 'com.google.android.gms:play-services-auth:20.0.1'
 
-    implementation 'com.stripe:stripe-android:18.0.0'
+    implementation 'com.stripe:stripe-android:20.16.1'
 }
