@@ -5,7 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.SearchView
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -80,6 +83,33 @@ class ProductsFragment : Fragment() {
                 }
                 adapter = productAdapter
             }
+        }
+
+        val categorySpinner = view.findViewById<Spinner>(R.id.spinner)
+        val spinnerAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            listOf("All") + categories
+        )
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        categorySpinner.adapter = spinnerAdapter
+
+        categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                postion: Int,
+                id: Long
+            ) {
+                val selectedCategory = parent?.getItemAtPosition(postion) as? RealmCategory
+                Log.d("Selected category", selectedCategory.toString())
+                productAdapter.filterByCategory(selectedCategory?.id)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                productAdapter.filterByCategory(null)
+            }
+
         }
 
         setupSearchView(searchView, productAdapter)

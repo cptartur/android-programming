@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.example.store.R
-import com.example.store.databinding.FragmentLocalLoginBinding
 import com.example.store.databinding.FragmentProductDetailsBinding
 import com.example.store.repositories.ProductRepository
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +38,8 @@ class ProductDetailsFragment : Fragment() {
                 ProductRepository.getProduct(it)
             }
         }
-        binding.productDetailsText.text = product?.description ?: "Could not fetch product."
+        binding.productDetailsTitle.text = product?.name ?: "Could not fetch product title."
+        binding.productDetailsText.text =
+            product?.description ?: "Could not fetch product description."
     }
 }

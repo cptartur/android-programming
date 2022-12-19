@@ -41,7 +41,7 @@
     <fragment
         android:id="@+id/productDetailsFragment"
         android:name="com.example.store.fragments.ProductDetailsFragment"
-        android:label="fragment_product_details"
+        android:label="Product Details"
         tools:layout="@layout/fragment_product_details" >
         <argument
             android:name="productId"

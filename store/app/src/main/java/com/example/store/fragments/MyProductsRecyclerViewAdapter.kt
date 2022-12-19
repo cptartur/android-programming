@@ -1,5 +1,6 @@
 package com.example.store.fragments
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -14,7 +15,7 @@ class MyProductsRecyclerViewAdapter(
     private val listener: OnAddToCartClickListener,
     private val detailsListener: OnDetailsClickListener,
 ) : RecyclerView.Adapter<MyProductsRecyclerViewAdapter.ViewHolder>() {
-    private var valuesCopy: MutableList<RealmProduct> = values.toMutableList()
+    private val valuesCopy: MutableList<RealmProduct> = values
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -41,6 +42,7 @@ class MyProductsRecyclerViewAdapter(
         val category: TextView = binding.category
         val price: TextView = binding.price
         val addToCartButton = binding.buttonAddToCart
+        val view = binding.root
 
         override fun toString(): String {
             return super.toString() + " '" + name.text + "'"
@@ -52,13 +54,22 @@ class MyProductsRecyclerViewAdapter(
                 categories.firstOrNull { it.id == product.categoryId }?.name ?: "Unknown category"
             price.text = "$" + product.price
             addToCartButton.setOnClickListener { listener.onAddToCart(product) }
-            name.setOnClickListener { detailsListener.onDetails(product) }
+//            name.setOnClickListener { detailsListener.onDetails(product) }
+            view.setOnClickListener { detailsListener.onDetails(product) }
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun filter(query: String) {
         values =
             valuesCopy.filter { it.name.lowercase().startsWith(query.lowercase()) }.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun filterByCategory(categoryId: Int?) {
+        val filteredValues = categoryId?.let { valuesCopy.filter { it.categoryId == categoryId } }
+        values = filteredValues?.toMutableList() ?: valuesCopy
         notifyDataSetChanged()
     }
 }

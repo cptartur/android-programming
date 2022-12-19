@@ -10,4 +10,6 @@ open class RealmCategory(): RealmObject() {
 
     @Required
     var name: String = ""
+
+    override fun toString() = name
 }
