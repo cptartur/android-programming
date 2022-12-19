@@ -32,7 +32,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/description"
+                    android:id="@+id/category"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="8dp"
@@ -41,7 +41,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/name"
                     app:layout_constraintStart_toStartOf="@+id/name"
                     app:layout_constraintTop_toBottomOf="@+id/name"
-                    tools:text="Example description"/>
+                    tools:text="Example category"/>
 
                 <TextView
                     android:id="@+id/price"

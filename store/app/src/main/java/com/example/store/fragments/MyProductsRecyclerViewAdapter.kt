@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.store.databinding.FragmentProductBinding
+import com.example.store.realm.models.RealmCategory
 import com.example.store.realm.models.RealmProduct
 
 class MyProductsRecyclerViewAdapter(
     private var values: MutableList<RealmProduct>,
+    private val categories: List<RealmCategory>,
     private val listener: OnAddToCartClickListener,
     private val detailsListener: OnDetailsClickListener,
 ) : RecyclerView.Adapter<MyProductsRecyclerViewAdapter.ViewHolder>() {
@@ -36,7 +38,7 @@ class MyProductsRecyclerViewAdapter(
     inner class ViewHolder(binding: FragmentProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val name: TextView = binding.name
-        val description: TextView = binding.description
+        val category: TextView = binding.category
         val price: TextView = binding.price
         val addToCartButton = binding.buttonAddToCart
 
@@ -46,7 +48,8 @@ class MyProductsRecyclerViewAdapter(
 
         fun bind(product: RealmProduct, listener: OnAddToCartClickListener) {
             name.text = product.name
-            description.text = product.description
+            category.text =
+                categories.firstOrNull { it.id == product.categoryId }?.name ?: "Unknown category"
             price.text = "$" + product.price
             addToCartButton.setOnClickListener { listener.onAddToCart(product) }
             name.setOnClickListener { detailsListener.onDetails(product) }

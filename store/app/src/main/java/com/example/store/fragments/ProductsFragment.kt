@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.store.R
+import com.example.store.realm.models.RealmCategory
 import com.example.store.realm.models.RealmProduct
 import com.example.store.realm.repositories.RealmCartRepository
+import com.example.store.realm.repositories.RealmCategoryRepository
 import com.example.store.realm.repositories.RealmProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -23,6 +25,7 @@ class ProductsFragment : Fragment() {
 
     private var columnCount = 1
     private var products: List<RealmProduct> = mutableListOf()
+    private var categories: List<RealmCategory> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +49,16 @@ class ProductsFragment : Fragment() {
 
         runBlocking(Dispatchers.IO) {
             products = RealmProductRepository.getProducts()
+
+            RealmCategoryRepository.syncCategories()
+            categories = RealmCategoryRepository.getCategories()
         }
         val recyclerView = view.findViewById<RecyclerView>(R.id.list)
         val searchView = view.findViewById<SearchView>(R.id.searchView)
-        val productAdapter = MyProductsRecyclerViewAdapter(products as MutableList<RealmProduct>,
+
+        val productAdapter = MyProductsRecyclerViewAdapter(
+            products as MutableList<RealmProduct>,
+            categories,
             object : OnAddToCartClickListener {
                 override fun onAddToCart(product: RealmProduct) {
                     addToCart(product)
