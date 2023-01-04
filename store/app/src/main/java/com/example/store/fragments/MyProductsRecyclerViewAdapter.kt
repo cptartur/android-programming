@@ -15,7 +15,9 @@ class MyProductsRecyclerViewAdapter(
     private val listener: OnAddToCartClickListener,
     private val detailsListener: OnDetailsClickListener,
 ) : RecyclerView.Adapter<MyProductsRecyclerViewAdapter.ViewHolder>() {
-    private val valuesCopy: MutableList<RealmProduct> = values
+    private val originalValues: MutableList<RealmProduct> = values
+    private var valuesCopy: MutableList<RealmProduct> = values
+    private var filterString: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -61,6 +63,7 @@ class MyProductsRecyclerViewAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun filter(query: String) {
+        filterString = query
         values =
             valuesCopy.filter { it.name.lowercase().startsWith(query.lowercase()) }.toMutableList()
         notifyDataSetChanged()
@@ -68,8 +71,11 @@ class MyProductsRecyclerViewAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun filterByCategory(categoryId: Int?) {
-        val filteredValues = categoryId?.let { valuesCopy.filter { it.categoryId == categoryId } }
-        values = filteredValues?.toMutableList() ?: valuesCopy
+        val filteredValues =
+            categoryId?.let { originalValues.filter { it.categoryId == categoryId } }
+        values = filteredValues?.toMutableList() ?: originalValues
+        valuesCopy = values
+        filter(filterString)
         notifyDataSetChanged()
     }
 }
