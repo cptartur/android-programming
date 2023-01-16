@@ -9,6 +9,7 @@ data class Product(
     var price: Int,
     var id: Int,
     var categoryId: Int,
+    var imageUrl: String,
 ) {
     companion object {
         fun fromRow(row: ResultRow) = Product(
@@ -16,7 +17,8 @@ data class Product(
             description = row[Products.description],
             price = row[Products.price],
             id = row[Products.id].value,
-            categoryId = row[Products.categoryId]
+            categoryId = row[Products.categoryId],
+            imageUrl = row[Products.imageUrl]
         )
     }
 }

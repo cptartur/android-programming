@@ -14,6 +14,7 @@ object ProductRepository : Repository<Product> {
                 it[description] = obj.description
                 it[price] = obj.price
                 it[categoryId] = obj.categoryId
+                it[imageUrl] = obj.imageUrl
             }
         }
         return id.value
@@ -27,6 +28,7 @@ object ProductRepository : Repository<Product> {
                 it[price] = obj.price
                 it[Products.id] = Products.select { Products.id eq id }.first()[Products.id]
                 it[categoryId] = obj.categoryId
+                it[imageUrl] = obj.imageUrl
             }
         }
         return true

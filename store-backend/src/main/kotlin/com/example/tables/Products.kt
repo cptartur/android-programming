@@ -7,4 +7,5 @@ object Products : IntIdTable() {
     val description = varchar("description", 150)
     val price = integer("price")
     val categoryId = integer("category_id").references(Categories.id)
+    val imageUrl = varchar("image_url", 180)
 }

@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object CartProductRepository {
     fun createOrUpdate(id: Int, product: Product, amount: Int): Int {
         transaction {
-            CartsProducts.update({ CartsProducts.productId eq product.id}) {
+            CartsProducts.update({ CartsProducts.productId eq product.id }) {
                 it[CartsProducts.amount] = amount
             }
             CartsProducts.insertIgnore {
@@ -45,9 +45,20 @@ object CartProductRepository {
     }
 
     fun findById(cartId: Int): List<ProductWithAmount> {
-        return transaction{
-            CartsProducts.join(Products, JoinType.INNER, additionalConstraint = { CartsProducts.productId eq Products.id })
-                .slice(Products.id, Products.price, Products.name, Products.description, Products.categoryId, CartsProducts.amount)
+        return transaction {
+            CartsProducts.join(
+                Products,
+                JoinType.INNER,
+                additionalConstraint = { CartsProducts.productId eq Products.id })
+                .slice(
+                    Products.id,
+                    Products.price,
+                    Products.name,
+                    Products.description,
+                    Products.categoryId,
+                    Products.imageUrl,
+                    CartsProducts.amount
+                )
                 .select { CartsProducts.cartId eq cartId }
                 .map {
                     ProductWithAmount(
@@ -57,6 +68,7 @@ object CartProductRepository {
                             it[Products.price],
                             it[Products.id].value,
                             it[Products.categoryId],
+                            it[Products.imageUrl]
                         ), it[CartsProducts.amount]
                     )
                 }
