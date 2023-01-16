@@ -6,4 +6,5 @@ data class Product(
     var price: Int,
     var id: Int,
     var categoryId: Int,
+    var imageUrl: String
 )

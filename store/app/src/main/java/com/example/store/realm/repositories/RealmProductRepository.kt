@@ -19,6 +19,7 @@ object RealmProductRepository {
             product.description = it.description
             product.price = it.price
             product.categoryId = it.categoryId
+            product.imageUrl = it.imageUrl
             realm.executeTransaction { realmTransaction ->
                 realmTransaction.insert(product)
             }

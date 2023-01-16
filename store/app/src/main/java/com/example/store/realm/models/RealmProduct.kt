@@ -17,4 +17,6 @@ open class RealmProduct(): RealmObject() {
     var price: Int = 0
 
     var categoryId: Int = 0
+
+    var imageUrl: String = ""
 }

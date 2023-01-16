@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import coil.load
 import com.example.store.databinding.FragmentProductDetailsBinding
 import com.example.store.repositories.ProductRepository
 import kotlinx.coroutines.Dispatchers
@@ -41,5 +42,8 @@ class ProductDetailsFragment : Fragment() {
         binding.productDetailsTitle.text = product?.name ?: "Could not fetch product title."
         binding.productDetailsText.text =
             product?.description ?: "Could not fetch product description."
+
+        val imageView = binding.imageView
+        imageView.load(product?.imageUrl)
     }
 }
